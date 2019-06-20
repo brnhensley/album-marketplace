@@ -10,7 +10,7 @@ export class AlbumService {
     this.albums = database.list('albums');
   }
 
-  getAlbums(){
+  getAlbums() {
     return this.albums;
   }
 
@@ -18,8 +18,22 @@ export class AlbumService {
     this.albums.push(newAlbum);
   }
 
-  getAlbumById(albumId: string){
-      return this.database.object('albums/' + albumId);
+  getAlbumById(albumId: string) {
+    return this.database.object('/albums/' + albumId);
+  }
+
+  upDateAlbum(localUpdatedAlbum) {
+    let albumEntryInFirebase = this.getAlbumById(localUpdatedAlbum.$key);
+    albumEntryInFirebase.update({
+      title: localUpdatedAlbum.title,
+      artist: localUpdatedAlbum.artist,
+      description: localUpdatedAlbum.description
+    });
+  }
+
+  deleteAlbum(localAlbumToDelete){
+    let albumEntryInFirebase = this.getAlbumById(localAlbumToDelete.$key);
+    albumEntryInFirebase.remove();
   }
 
 }
